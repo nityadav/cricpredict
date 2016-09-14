@@ -1,5 +1,5 @@
 from bs4 import BeautifulSoup
-import urllib2, json
+import urllib2, json, sys
 
 def get_page(url):
   try:  
@@ -67,10 +67,12 @@ def extract_from_url(url):
 	match['bowling_innings'] = [bowl_innings1, bowl_innings2]
 	match['fow'] = [fow1,fow2]
 
-	filename = url.split('/')[-1].split('.')[0] + ".json"
+	filename = 'json_data/' + url.split('/')[-1].split('.')[0] + ".json"
 	with open(filename, 'w') as outfile:
 		json.dump(match, outfile)
 
-urls = ['http://www.espncricinfo.com/ci/engine/match/64154.html','http://www.espncricinfo.com/ci/engine/match/65294.html', 'http://www.espncricinfo.com/ci/engine/match/65184.html']
-for url in urls:
-	extract_from_url(url)
+urls_file = sys.argv[1]
+print "Reading file: " + urls_file
+with open(urls_file) as f:
+	for url in f:
+		extract_from_url(url)
